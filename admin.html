@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Dose - Admin Panel</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:#0f172a;
+    color:#e2e8f0;
+    line-height:1.5;
+    min-height:100vh;
+}
+
+/* HEADER */
+.header{
+    background:linear-gradient(135deg,#f97316,#ea580c);
+    padding:16px 20px;
+    color:#fff;
+    box-shadow:0 4px 15px rgba(249,115,22,0.3);
+}
+.header h1{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+.header p{
+    font-size:12px;
+    opacity:0.9;
+    margin-top:3px;
+}
+
+/* CONTAINER */
+.container{
+    max-width:900px;
+    margin:0 auto;
+    padding:20px 16px;
+}
+
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px;
+    margin-bottom:22px;
+}
+.stat-card{
+    background:#1e293b;
+    padding:16px;
+    border-radius:12px;
+    border-left:4px solid #f97316;
+}
+.stat-card .lbl{
+    font-size:11px;
+    color:#94a3b8;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:700;
+}
+.stat-card .val{
+    font-size:24px;
+    font-weight:900;
+    color:#f97316;
+    margin-top:4px;
+}
+
+/* SECTION */
+.section-title{
+    font-size:16px;
+    font-weight:900;
+    color:#f97316;
+    margin-bottom:14px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+/* OTP VERIFY BOX */
+.verify-box{
+    background:#1e293b;
+    border:2px dashed #16a34a;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:22px;
+}
+.verify-box h3{
+    font-size:14px;
+    color:#16a34a;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:10px;
+}
+.verify-input-row{
+    display:flex;
+    gap:8px;
+}
+.verify-input-row input{
+    flex:1;
+    padding:12px;
+    background:#0f172a;
+    border:2px solid #334155;
+    border-radius:10px;
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:2px;
+    text-align:center;
+    outline:none;
+    font-family:inherit;
+}
+.verify-input-row input:focus{
+    border-color:#16a34a;
+}
+.verify-btn{
+    padding:12px 22px;
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-family:inherit;
+}
+.verify-btn:active{transform:scale(0.97);}
+
+/* ORDER CARD */
+.order-card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:12px;
+    border-left:4px solid #f97316;
+    position:relative;
+}
+.order-card.delivered{border-left-color:#16a34a;opacity:0.7;}
+.order-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+    gap:6px;
+}
+.order-id{
+    font-size:14px;
+    font-weight:900;
+    color:#f97316;
+}
+.order-time{
+    font-size:11px;
+    color:#94a3b8;
+}
+.order-info{
+    font-size:13px;
+    color:#cbd5e1;
+    margin-bottom:8px;
+}
+.order-info b{color:#fff;}
+
+/* OTP DISPLAY */
+.otp-display{
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:8px;
+    padding:8px 12px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin:8px 0;
+    font-size:12px;
+    color:#94a3b8;
+}
+.otp-display b{
+    color:#f97316;
+    font-size:16px;
+    letter-spacing:2px;
+    font-family:'Arial Black',sans-serif;
+}
+
+/* STATUS BADGE */
+.badge{
+    display:inline-block;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+.badge-pending{background:#fbbf24;color:#78350f;}
+.badge-delivered{background:#16a34a;color:#fff;}
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    padding:50px 20px;
+    color:#64748b;
+}
+.empty .icon{font-size:60px;margin-bottom:12px;}
+
+/* TOAST */
+.toast{
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#16a34a;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:700;
+    z-index:99999;
+    box-shadow:0 5px 20px rgba(22,163,74,0.5);
+    animation:fadeIn 0.3s;
+}
+.toast.error{background:#dc2626;box-shadow:0 5px 20px rgba(220,38,38,0.5);}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+
+@media(max-width:500px){
+    .verify-input-row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🍽️ DAILY DOSE — Admin Panel</h1>
+    <p>Restaurant Order Management • Civil Lines, Raipur</p>
+</div>
+
+<div class="container">
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="lbl">Total Orders</div>
+            <div class="val" id="totalOrders">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="lbl">Pending</div>
+            <div class="val" id="pendingOrders">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="lbl">Delivered</div>
+            <div class="val" id="deliveredOrders">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="lbl">Revenue</div>
+            <div class="val" id="totalRevenue">₹0</div>
+        </div>
+    </div>
+
+    <!-- OTP VERIFY -->
+    <div class="verify-box">
+        <h3>🔐 Verify Delivery OTP</h3>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">
+            Delivery वाला OTP डाले → customer से मिलान करे → Delivered confirm हो
+        </p>
+        <div class="verify-input-row">
+            <input type="text" id="otpInput" maxlength="4" placeholder="0000" inputmode="numeric">
+            <button class="verify-btn" onclick="verifyOTP()">VERIFY</button>
+        </div>
+    </div>
+
+    <!-- ORDERS LIST -->
+    <div class="section-title">📦 Recent Orders</div>
+    <div id="ordersList"></div>
+
+</div>
+
+<script>
+// ============================================================
+// ORDERS STORAGE (localStorage — free)
+// Customer app और Admin panel के बीच share होता है
+// ============================================================
+
+function getOrders() {
+    try {
+        return JSON.parse(localStorage.getItem("dailyDoseOrders") || "[]");
+    } catch(e) {
+        return [];
+    }
+}
+
+function saveOrders(orders) {
+    localStorage.setItem("dailyDoseOrders", JSON.stringify(orders));
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderOrders() {
+    const orders = getOrders();
+    const list = document.getElementById("ordersList");
+
+    // Stats
+    const total = orders.length;
+    const pending = orders.filter(o => o.status !== "delivered").length;
+    const delivered = orders.filter(o => o.status === "delivered").length;
+    const revenue = orders
+        .filter(o => o.status === "delivered")
+        .reduce((s, o) => s + o.total, 0);
+
+    document.getElementById("totalOrders").textContent = total;
+    document.getElementById("pendingOrders").textContent = pending;
+    document.getElementById("deliveredOrders").textContent = delivered;
+    document.getElementById("totalRevenue").textContent = "₹" + revenue;
+
+    // List
+    if (orders.length === 0) {
+        list.innerHTML = `
+            <div class="empty">
+                <div class="icon">📭</div>
+                <p>अभी कोई order नहीं आया</p>
+                <p style="font-size:12px;margin-top:6px;">Customer app से order करने पर यहाँ दिखेगा</p>
+            </div>`;
+        return;
+    }
+
+    // नए orders पहले
+    const sorted = [...orders].reverse();
+
+    list.innerHTML = sorted.map(o => `
+        <div class="order-card ${o.status === 'delivered' ? 'delivered' : ''}">
+            <div class="order-header">
+                <div>
+                    <div class="order-id">${o.orderId}</div>
+                    <div class="order-time">${o.timeStr || ''}</div>
+                </div>
+                <span class="badge ${o.status === 'delivered' ? 'badge-delivered' : 'badge-pending'}">
+                    ${o.status === 'delivered' ? '✓ Delivered' : '⏳ Pending'}
+                </span>
+            </div>
+
+            <div class="order-info">
+                <b>${o.name}</b> • ${o.mobile}<br>
+                ${o.orderType === 'delivery' ? '🚴 Delivery' : '🥡 Takeaway'} — ${o.address || 'No address'}
+            </div>
+
+            <div class="order-info" style="font-size:12px;color:#94a3b8;">
+                ${o.items.map(i => `${i.name} × ${i.qty}`).join(', ')}
+            </div>
+
+            <div class="otp-display">
+                🔐 Delivery OTP: <b>${o.otp}</b>
+            </div>
+
+            <div style="font-size:14px;font-weight:800;color:#f97316;margin-top:4px;">
+                Total: ₹${o.total}
+            </div>
+        </div>
+    `).join("");
+}
+
+// ============================================================
+// OTP VERIFY
+// ============================================================
+function verifyOTP() {
+    const entered = document.getElementById("otpInput").value.trim();
+    if (!/^[0-9]{4}$/.test(entered)) {
+        showToast("4-digit OTP डालें!", true);
+        return;
+    }
+
+    const orders = getOrders();
+    const pendingOrder = orders.find(o => o.otp === entered && o.status !== "delivered");
+
+    if (!pendingOrder) {
+        showToast("❌ गलत OTP या order already delivered!", true);
+        return;
+    }
+
+    // Mark delivered
+    pendingOrder.status = "delivered";
+    pendingOrder.deliveredAt = new Date().toISOString();
+    saveOrders(orders);
+
+    showToast(`✅ Order ${pendingOrder.orderId} Delivered!`);
+    document.getElementById("otpInput").value = "";
+    renderOrders();
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, isError) {
+    const t = document.createElement("div");
+    t.className = "toast" + (isError ? " error" : "");
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2000);
+}
+
+// ============================================================
+// AUTO REFRESH (हर 5 सेकंड)
+// ============================================================
+renderOrders();
+setInterval(renderOrders, 5000);
+</script>
+
+</body>
+</html>
