@@ -12,6 +12,7 @@ body{
     color:#e2e8f0;
     line-height:1.5;
     min-height:100vh;
+    padding-bottom:40px;
 }
 
 /* HEADER */
@@ -20,9 +21,12 @@ body{
     padding:16px 20px;
     color:#fff;
     box-shadow:0 4px 15px rgba(249,115,22,0.3);
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 .header h1{
-    font-size:20px;
+    font-size:19px;
     font-weight:900;
     letter-spacing:1px;
 }
@@ -32,12 +36,44 @@ body{
     margin-top:3px;
 }
 
+/* TABS */
+.tabs{
+    display:flex;
+    background:#1e293b;
+    position:sticky;
+    top:70px;
+    z-index:99;
+    border-bottom:2px solid #334155;
+    overflow-x:auto;
+}
+.tab{
+    flex:1;
+    padding:14px 12px;
+    text-align:center;
+    font-size:13px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:#94a3b8;
+    cursor:pointer;
+    white-space:nowrap;
+    border-bottom:3px solid transparent;
+    transition:all 0.2s;
+}
+.tab.active{
+    color:#f97316;
+    border-bottom-color:#f97316;
+    background:#0f172a;
+}
+
 /* CONTAINER */
 .container{
     max-width:900px;
     margin:0 auto;
     padding:20px 16px;
 }
+.page{display:none;}
+.page.active{display:block;}
 
 /* STATS */
 .stats{
@@ -74,9 +110,26 @@ body{
     margin-bottom:14px;
     text-transform:uppercase;
     letter-spacing:1px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
+.add-new-btn{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    border:none;
+    padding:8px 16px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    font-family:inherit;
+}
+.add-new-btn:active{transform:scale(0.97);}
 
-/* OTP VERIFY BOX */
+/* OTP VERIFY */
 .verify-box{
     background:#1e293b;
     border:2px dashed #16a34a;
@@ -109,9 +162,7 @@ body{
     outline:none;
     font-family:inherit;
 }
-.verify-input-row input:focus{
-    border-color:#16a34a;
-}
+.verify-input-row input:focus{border-color:#16a34a;}
 .verify-btn{
     padding:12px 22px;
     background:linear-gradient(135deg,#16a34a,#15803d);
@@ -125,7 +176,6 @@ body{
     text-transform:uppercase;
     font-family:inherit;
 }
-.verify-btn:active{transform:scale(0.97);}
 
 /* ORDER CARD */
 .order-card{
@@ -134,7 +184,6 @@ body{
     padding:16px;
     margin-bottom:12px;
     border-left:4px solid #f97316;
-    position:relative;
 }
 .order-card.delivered{border-left-color:#16a34a;opacity:0.7;}
 .order-header{
@@ -145,23 +194,10 @@ body{
     flex-wrap:wrap;
     gap:6px;
 }
-.order-id{
-    font-size:14px;
-    font-weight:900;
-    color:#f97316;
-}
-.order-time{
-    font-size:11px;
-    color:#94a3b8;
-}
-.order-info{
-    font-size:13px;
-    color:#cbd5e1;
-    margin-bottom:8px;
-}
+.order-id{font-size:14px;font-weight:900;color:#f97316;}
+.order-time{font-size:11px;color:#94a3b8;}
+.order-info{font-size:13px;color:#cbd5e1;margin-bottom:8px;}
 .order-info b{color:#fff;}
-
-/* OTP DISPLAY */
 .otp-display{
     background:#0f172a;
     border:1px solid #334155;
@@ -180,8 +216,6 @@ body{
     letter-spacing:2px;
     font-family:'Arial Black',sans-serif;
 }
-
-/* STATUS BADGE */
 .badge{
     display:inline-block;
     padding:4px 12px;
@@ -194,6 +228,112 @@ body{
 .badge-pending{background:#fbbf24;color:#78350f;}
 .badge-delivered{background:#16a34a;color:#fff;}
 
+/* MENU MANAGEMENT */
+.menu-item-card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:10px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    border-left:4px solid #f97316;
+}
+.menu-item-img{
+    width:64px;
+    height:64px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#334155,#1e293b);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    flex-shrink:0;
+    overflow:hidden;
+    border:2px solid #334155;
+}
+.menu-item-img img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.menu-item-info{flex:1;min-width:0;}
+.menu-item-name{
+    font-size:14px;
+    font-weight:800;
+    color:#fff;
+    margin-bottom:3px;
+}
+.menu-item-desc{
+    font-size:11px;
+    color:#94a3b8;
+    margin-bottom:4px;
+    line-height:1.4;
+}
+.menu-item-price{
+    font-size:14px;
+    font-weight:900;
+    color:#f97316;
+}
+.menu-item-actions{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+.action-btn{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.action-edit{background:#0ea5e9;color:#fff;}
+.action-delete{background:#dc2626;color:#fff;}
+.action-btn:active{transform:scale(0.95);}
+
+/* CATEGORY HEADER */
+.cat-header{
+    background:#334155;
+    padding:10px 14px;
+    border-radius:10px;
+    margin:18px 0 10px;
+    font-size:14px;
+    font-weight:900;
+    color:#f97316;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.cat-header .count{
+    font-size:11px;
+    color:#94a3b8;
+    font-weight:700;
+    letter-spacing:0;
+}
+.cat-actions{
+    display:flex;
+    gap:6px;
+}
+.cat-action-btn{
+    background:#475569;
+    color:#fff;
+    border:none;
+    padding:5px 10px;
+    border-radius:6px;
+    font-size:10px;
+    font-weight:800;
+    cursor:pointer;
+    text-transform:uppercase;
+}
+.cat-action-btn.danger{background:#dc2626;}
+.cat-action-btn.add{background:#16a34a;}
+
 /* EMPTY */
 .empty{
     text-align:center;
@@ -201,6 +341,191 @@ body{
     color:#64748b;
 }
 .empty .icon{font-size:60px;margin-bottom:12px;}
+.empty p{font-size:14px;}
+
+/* MODAL */
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.8);
+    z-index:999;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    overflow-y:auto;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+    background:#1e293b;
+    width:100%;
+    max-width:440px;
+    border-radius:16px;
+    padding:22px 18px;
+    max-height:92vh;
+    overflow-y:auto;
+    animation:popIn 0.25s ease;
+    border:2px solid #334155;
+}
+@keyframes popIn{
+    from{transform:scale(0.9);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+    padding-bottom:12px;
+    border-bottom:2px solid #334155;
+}
+.modal-header h3{
+    font-size:16px;
+    font-weight:900;
+    color:#f97316;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+.close-btn{
+    background:#334155;
+    color:#fff;
+    border:none;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* FORM */
+.form-group{margin-bottom:14px;}
+.form-group label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    color:#94a3b8;
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:11px 14px;
+    background:#0f172a;
+    border:2px solid #334155;
+    border-radius:10px;
+    color:#fff;
+    font-size:14px;
+    outline:none;
+    font-family:inherit;
+    font-weight:600;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:#f97316;
+}
+
+/* IMAGE UPLOAD */
+.img-upload-box{
+    background:#0f172a;
+    border:2px dashed #334155;
+    border-radius:12px;
+    padding:16px;
+    text-align:center;
+    cursor:pointer;
+    margin-bottom:14px;
+    transition:border-color 0.2s;
+}
+.img-upload-box:hover{border-color:#f97316;}
+.img-preview{
+    width:110px;
+    height:110px;
+    margin:0 auto 10px;
+    border-radius:12px;
+    background:#1e293b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:44px;
+    overflow:hidden;
+    border:2px solid #334155;
+}
+.img-preview img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.img-upload-text{
+    font-size:12px;
+    color:#94a3b8;
+    font-weight:700;
+}
+.img-upload-text b{color:#f97316;}
+#fileInput{display:none;}
+
+/* VEG TOGGLE */
+.veg-toggle{
+    display:flex;
+    gap:10px;
+}
+.veg-opt{
+    flex:1;
+    padding:10px;
+    border:2px solid #334155;
+    border-radius:10px;
+    text-align:center;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:700;
+    background:#0f172a;
+    color:#94a3b8;
+}
+.veg-opt.active{
+    background:#16a34a;
+    color:#fff;
+    border-color:#16a34a;
+}
+.veg-opt.active.nonveg{
+    background:#dc2626;
+    border-color:#dc2626;
+}
+
+/* BUTTONS */
+.btn-row{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
+.btn-save{
+    flex:1;
+    padding:14px;
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-family:inherit;
+}
+.btn-cancel{
+    padding:14px 20px;
+    background:#334155;
+    color:#e2e8f0;
+    border:none;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    text-transform:uppercase;
+    font-family:inherit;
+}
 
 /* TOAST */
 .toast{
@@ -217,12 +542,15 @@ body{
     z-index:99999;
     box-shadow:0 5px 20px rgba(22,163,74,0.5);
     animation:fadeIn 0.3s;
+    max-width:90%;
+    text-align:center;
 }
 .toast.error{background:#dc2626;box-shadow:0 5px 20px rgba(220,38,38,0.5);}
 @keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 
 @media(max-width:500px){
     .verify-input-row{flex-direction:column;}
+    .tabs{top:68px;}
 }
 </style>
 </head>
@@ -230,12 +558,19 @@ body{
 
 <div class="header">
     <h1>🍽️ DAILY DOSE — Admin Panel</h1>
-    <p>Restaurant Order Management • Civil Lines, Raipur</p>
+    <p>Restaurant Management • Civil Lines, Raipur</p>
 </div>
 
-<div class="container">
+<!-- TABS -->
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('orders')">📦 Orders</div>
+    <div class="tab" onclick="switchTab('menu')">🍽️ Menu</div>
+    <div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
+</div>
 
-    <!-- STATS -->
+<!-- ORDERS PAGE -->
+<div class="container page active" id="page-orders">
+
     <div class="stats">
         <div class="stat-card">
             <div class="lbl">Total Orders</div>
@@ -255,7 +590,6 @@ body{
         </div>
     </div>
 
-    <!-- OTP VERIFY -->
     <div class="verify-box">
         <h3>🔐 Verify Delivery OTP</h3>
         <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">
@@ -267,51 +601,267 @@ body{
         </div>
     </div>
 
-    <!-- ORDERS LIST -->
     <div class="section-title">📦 Recent Orders</div>
     <div id="ordersList"></div>
+</div>
 
+<!-- MENU PAGE -->
+<div class="container page" id="page-menu">
+    <div class="section-title">
+        🍽️ Menu Management
+        <button class="add-new-btn" onclick="openCategoryModal()">+ Category</button>
+    </div>
+    <div id="menuList"></div>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div class="container page" id="page-settings">
+    <div class="section-title">⚙️ Restaurant Settings</div>
+
+    <div class="form-group">
+        <label>Restaurant Name</label>
+        <input type="text" id="setName" placeholder="Daily Dose">
+    </div>
+
+    <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="setLocation" placeholder="Civil Lines, Raipur">
+    </div>
+
+    <div class="form-group">
+        <label>WhatsApp Number (with country code, no +)</label>
+        <input type="tel" id="setWhatsApp" placeholder="919999999999">
+    </div>
+
+    <div class="form-group">
+        <label>Opening Time</label>
+        <input type="text" id="setOpen" placeholder="11:00 AM">
+    </div>
+
+    <div class="form-group">
+        <label>Closing Time</label>
+        <input type="text" id="setClose" placeholder="11:00 PM">
+    </div>
+
+    <div class="form-group">
+        <label>Free Delivery Up To (KM)</label>
+        <input type="number" id="setDeliveryKm" placeholder="5">
+    </div>
+
+    <div class="form-group">
+        <label>Delivery Charge (₹)</label>
+        <input type="number" id="setDeliveryCharge" placeholder="30">
+    </div>
+
+    <div class="form-group">
+        <label>Base Delivery Time (minutes)</label>
+        <input type="number" id="setBaseTime" placeholder="25">
+    </div>
+
+    <button class="btn-save" onclick="saveSettings()">💾 SAVE SETTINGS</button>
+</div>
+
+<!-- ITEM MODAL -->
+<div class="modal-overlay" id="itemModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="itemModalTitle">Add Item</h3>
+            <button class="close-btn" onclick="closeItemModal()">✕</button>
+        </div>
+
+        <div class="img-upload-box" onclick="document.getElementById('fileInput').click()">
+            <div class="img-preview" id="imgPreview">📷</div>
+            <div class="img-upload-text">📸 <b>Tap to upload photo</b><br>Photo अपलोड करें</div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" onchange="handleImageUpload(event)">
+
+        <div class="form-group">
+            <label>Item Name / नाम</label>
+            <input type="text" id="itemName" placeholder="Chocolate Cake">
+        </div>
+
+        <div class="form-group">
+            <label>Description / विवरण</label>
+            <textarea id="itemDesc" rows="2" placeholder="Rich chocolate cake with truffle icing"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Price (₹)</label>
+            <input type="number" id="itemPrice" placeholder="550">
+        </div>
+
+        <div class="form-group">
+            <label>Emoji (fallback अगर photo न हो)</label>
+            <input type="text" id="itemEmoji" placeholder="🍰" maxlength="2">
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select id="itemCategory"></select>
+        </div>
+
+        <div class="form-group">
+            <label>Type</label>
+            <div class="veg-toggle">
+                <div class="veg-opt active" id="vegOpt" onclick="setVeg(true)">🟢 Veg</div>
+                <div class="veg-opt" id="nonvegOpt" onclick="setVeg(false)">🔴 Non-Veg</div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-save" onclick="saveItem()">💾 SAVE</button>
+            <button class="btn-cancel" onclick="closeItemModal()">CANCEL</button>
+        </div>
+    </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal-overlay" id="catModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Add Category</h3>
+            <button class="close-btn" onclick="closeCategoryModal()">✕</button>
+        </div>
+
+        <div class="form-group">
+            <label>Category Name / नाम</label>
+            <input type="text" id="catName" placeholder="e.g. Pizza, Desserts">
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-save" onclick="saveCategory()">💾 SAVE</button>
+            <button class="btn-cancel" onclick="closeCategoryModal()">CANCEL</button>
+        </div>
+    </div>
 </div>
 
 <script>
 // ============================================================
-// ORDERS STORAGE (localStorage — free)
-// Customer app और Admin panel के बीच share होता है
+// STORAGE KEYS
 // ============================================================
+const KEY_ORDERS = "dailyDoseOrders";
+const KEY_MENU = "dailyDoseMenu";
+const KEY_SETTINGS = "dailyDoseSettings";
 
-function getOrders() {
+// ============================================================
+// DEFAULT MENU (Customer app के साथ match होना चाहिए)
+// ============================================================
+const DEFAULT_MENU = {
+    "Bakery": [
+        { id: "b1", name: "Chocolate Truffle Cake", desc: "Rich chocolate cake with truffle icing", price: 550, emoji: "🍰", img: "", veg: true },
+        { id: "b2", name: "Red Velvet Pastry", desc: "Classic red velvet with cream cheese", price: 120, emoji: "🧁", img: "", veg: true },
+        { id: "b3", name: "Butter Croissant", desc: "Flaky French-style croissant", price: 90, emoji: "🥐", img: "", veg: true },
+        { id: "b4", name: "Choco Brownie", desc: "Fudgy brownie with walnuts", price: 80, emoji: "🍫", img: "", veg: true }
+    ],
+    "Pan-Asian": [
+        { id: "p1", name: "Veg Momos (6 pcs)", desc: "Steamed momos with spicy chutney", price: 100, emoji: "🥟", img: "", veg: true },
+        { id: "p2", name: "Chicken Hakka Noodles", desc: "Wok-tossed noodles with chicken", price: 220, emoji: "🍜", img: "", veg: false },
+        { id: "p3", name: "Veg Fried Rice", desc: "Classic fried rice with veggies", price: 180, emoji: "🍚", img: "", veg: true },
+        { id: "p4", name: "Veg Manchurian", desc: "Crispy balls in tangy sauce", price: 200, emoji: "🥡", img: "", veg: true }
+    ],
+    "Continental": [
+        { id: "c1", name: "Pasta Alfredo", desc: "Creamy white sauce pasta", price: 280, emoji: "🍝", img: "", veg: true },
+        { id: "c2", name: "Grilled Sandwich", desc: "Triple-layer grilled sandwich", price: 180, emoji: "🥪", img: "", veg: true },
+        { id: "c3", name: "French Fries", desc: "Crispy golden fries", price: 120, emoji: "🍟", img: "", veg: true },
+        { id: "c4", name: "Margherita Pizza", desc: "Classic cheese pizza", price: 300, emoji: "🍕", img: "", veg: true }
+    ],
+    "Indian": [
+        { id: "i1", name: "Paneer Butter Masala", desc: "Creamy paneer curry", price: 280, emoji: "🍛", img: "", veg: true },
+        { id: "i2", name: "Dal Makhani", desc: "Slow-cooked black dal", price: 220, emoji: "🍲", img: "", veg: true },
+        { id: "i3", name: "Butter Naan", desc: "Soft naan with butter", price: 50, emoji: "🫓", img: "", veg: true },
+        { id: "i4", name: "Veg Biryani", desc: "Fragrant rice with veggies", price: 250, emoji: "🍚", img: "", veg: true }
+    ],
+    "Beverages": [
+        { id: "v1", name: "Cold Coffee", desc: "Chilled creamy coffee", price: 150, emoji: "🥤", img: "", veg: true },
+        { id: "v2", name: "Masala Chai", desc: "Indian spiced tea", price: 60, emoji: "☕", img: "", veg: true },
+        { id: "v3", name: "Fresh Lime Soda", desc: "Refreshing lime drink", price: 90, emoji: "🍋", img: "", veg: true },
+        { id: "v4", name: "Mango Shake", desc: "Fresh mango milkshake", price: 140, emoji: "🥭", img: "", veg: true }
+    ]
+};
+
+const DEFAULT_SETTINGS = {
+    name: "Daily Dose",
+    location: "Civil Lines, Raipur",
+    whatsapp: "919999999999",
+    open: "11:00 AM",
+    close: "11:00 PM",
+    deliveryKm: 5,
+    deliveryCharge: 30,
+    baseTime: 25
+};
+
+// ============================================================
+// STORAGE
+// ============================================================
+function getMenu() {
     try {
-        return JSON.parse(localStorage.getItem("dailyDoseOrders") || "[]");
+        const m = JSON.parse(localStorage.getItem(KEY_MENU) || "null");
+        if (!m || Object.keys(m).length === 0) {
+            localStorage.setItem(KEY_MENU, JSON.stringify(DEFAULT_MENU));
+            return JSON.parse(JSON.stringify(DEFAULT_MENU));
+        }
+        return m;
     } catch(e) {
-        return [];
+        return JSON.parse(JSON.stringify(DEFAULT_MENU));
     }
 }
+function saveMenu(m) { localStorage.setItem(KEY_MENU, JSON.stringify(m)); }
 
-function saveOrders(orders) {
-    localStorage.setItem("dailyDoseOrders", JSON.stringify(orders));
+function getOrders() {
+    try { return JSON.parse(localStorage.getItem(KEY_ORDERS) || "[]"); }
+    catch(e) { return []; }
+}
+function saveOrders(o) { localStorage.setItem(KEY_ORDERS, JSON.stringify(o)); }
+
+function getSettings() {
+    try {
+        const s = JSON.parse(localStorage.getItem(KEY_SETTINGS) || "null");
+        return s || { ...DEFAULT_SETTINGS };
+    } catch(e) { return { ...DEFAULT_SETTINGS }; }
+}
+function saveSettingsData(s) { localStorage.setItem(KEY_SETTINGS, JSON.stringify(s)); }
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(name) {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+
+    const tabs = document.querySelectorAll(".tab");
+    const pages = {
+        orders: "page-orders",
+        menu: "page-menu",
+        settings: "page-settings"
+    };
+
+    if (name === "orders") tabs[0].classList.add("active");
+    if (name === "menu") tabs[1].classList.add("active");
+    if (name === "settings") tabs[2].classList.add("active");
+
+    document.getElementById(pages[name]).classList.add("active");
+
+    if (name === "menu") renderMenuAdmin();
+    if (name === "settings") loadSettings();
 }
 
 // ============================================================
-// RENDER
+// ORDERS
 // ============================================================
 function renderOrders() {
     const orders = getOrders();
-    const list = document.getElementById("ordersList");
 
-    // Stats
     const total = orders.length;
     const pending = orders.filter(o => o.status !== "delivered").length;
     const delivered = orders.filter(o => o.status === "delivered").length;
-    const revenue = orders
-        .filter(o => o.status === "delivered")
-        .reduce((s, o) => s + o.total, 0);
+    const revenue = orders.filter(o => o.status === "delivered").reduce((s, o) => s + o.total, 0);
 
     document.getElementById("totalOrders").textContent = total;
     document.getElementById("pendingOrders").textContent = pending;
     document.getElementById("deliveredOrders").textContent = delivered;
     document.getElementById("totalRevenue").textContent = "₹" + revenue;
 
-    // List
+    const list = document.getElementById("ordersList");
     if (orders.length === 0) {
         list.innerHTML = `
             <div class="empty">
@@ -322,10 +872,7 @@ function renderOrders() {
         return;
     }
 
-    // नए orders पहले
-    const sorted = [...orders].reverse();
-
-    list.innerHTML = sorted.map(o => `
+    list.innerHTML = [...orders].reverse().map(o => `
         <div class="order-card ${o.status === 'delivered' ? 'delivered' : ''}">
             <div class="order-header">
                 <div>
@@ -336,72 +883,78 @@ function renderOrders() {
                     ${o.status === 'delivered' ? '✓ Delivered' : '⏳ Pending'}
                 </span>
             </div>
-
             <div class="order-info">
                 <b>${o.name}</b> • ${o.mobile}<br>
                 ${o.orderType === 'delivery' ? '🚴 Delivery' : '🥡 Takeaway'} — ${o.address || 'No address'}
             </div>
-
             <div class="order-info" style="font-size:12px;color:#94a3b8;">
                 ${o.items.map(i => `${i.name} × ${i.qty}`).join(', ')}
             </div>
-
-            <div class="otp-display">
-                🔐 Delivery OTP: <b>${o.otp}</b>
-            </div>
-
-            <div style="font-size:14px;font-weight:800;color:#f97316;margin-top:4px;">
-                Total: ₹${o.total}
-            </div>
+            <div class="otp-display">🔐 Delivery OTP: <b>${o.otp}</b></div>
+            <div style="font-size:14px;font-weight:800;color:#f97316;margin-top:4px;">Total: ₹${o.total}</div>
         </div>
     `).join("");
 }
 
-// ============================================================
-// OTP VERIFY
-// ============================================================
 function verifyOTP() {
     const entered = document.getElementById("otpInput").value.trim();
     if (!/^[0-9]{4}$/.test(entered)) {
         showToast("4-digit OTP डालें!", true);
         return;
     }
-
     const orders = getOrders();
     const pendingOrder = orders.find(o => o.otp === entered && o.status !== "delivered");
-
     if (!pendingOrder) {
-        showToast("❌ गलत OTP या order already delivered!", true);
+        showToast("❌ गलत OTP या already delivered!", true);
         return;
     }
-
-    // Mark delivered
     pendingOrder.status = "delivered";
     pendingOrder.deliveredAt = new Date().toISOString();
     saveOrders(orders);
-
     showToast(`✅ Order ${pendingOrder.orderId} Delivered!`);
     document.getElementById("otpInput").value = "";
     renderOrders();
 }
 
 // ============================================================
-// TOAST
+// MENU MANAGEMENT
 // ============================================================
-function showToast(msg, isError) {
-    const t = document.createElement("div");
-    t.className = "toast" + (isError ? " error" : "");
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 2000);
-}
+let currentEditItem = null;   // { category, id } अगर editing
+let currentVeg = true;
 
-// ============================================================
-// AUTO REFRESH (हर 5 सेकंड)
-// ============================================================
-renderOrders();
-setInterval(renderOrders, 5000);
-</script>
+function renderMenuAdmin() {
+    const menu = getMenu();
+    const list = document.getElementById("menuList");
 
-</body>
-</html>
+    if (Object.keys(menu).length === 0) {
+        list.innerHTML = `
+            <div class="empty">
+                <div class="icon">🍽️</div>
+                <p>अभी कोई category नहीं</p>
+                <p style="font-size:12px;margin-top:6px;">"+ Category" दबाओ और शुरू करो</p>
+            </div>`;
+        return;
+    }
+
+    let html = "";
+    Object.keys(menu).forEach(cat => {
+        html += `
+            <div class="cat-header">
+                <span>${cat} <span class="count">(${menu[cat].length})</span></span>
+                <div class="cat-actions">
+                    <button class="cat-action-btn add" onclick="openItemModalForCategory('${cat}')">+ Item</button>
+                    <button class="cat-action-btn danger" onclick="deleteCategory('${cat}')">Delete</button>
+                </div>
+            </div>
+        `;
+
+        if (menu[cat].length === 0) {
+            html += `<p style="font-size:12px;color:#64748b;padding:10px;text-align:center;">इस category में कोई item नहीं</p>`;
+        } else {
+            menu[cat].forEach(item => {
+                html += `
+                    <div class="menu-item-card">
+                        <div class="menu-item-img">
+                            ${item.img 
+                                ? `<img src="${item.img}" alt="${item.name}">` 
+                                : (item.emoji || "🍽
