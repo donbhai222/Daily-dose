@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Dose - Order Online</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:#fff7ed;
+    color:#1c1917;
+    line-height:1.5;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+.header{
+    background:linear-gradient(135deg,#f97316,#ea580c);
+    color:#fff;
+    padding:18px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 4px 15px rgba(249,115,22,0.3);
+}
+.header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+.logo span{color:#fef3c7;}
+.header-info{
+    margin-top:8px;
+    font-size:12px;
+    opacity:0.95;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+.header-info span{display:flex;align-items:center;gap:4px;}
+
+/* CATEGORY TABS */
+.cat-tabs{
+    background:#fff;
+    padding:12px 16px;
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    position:sticky;
+    top:88px;
+    z-index:99;
+    border-bottom:1px solid #fed7aa;
+    scrollbar-width:none;
+}
+.cat-tabs::-webkit-scrollbar{display:none;}
+.cat-tab{
+    flex-shrink:0;
+    padding:8px 16px;
+    background:#fff7ed;
+    border:2px solid #fed7aa;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    color:#9a3412;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all 0.2s;
+}
+.cat-tab.active{
+    background:linear-gradient(135deg,#f97316,#ea580c);
+    color:#fff;
+    border-color:#ea580c;
+}
+
+/* MENU */
+.menu-section{
+    padding:16px;
+    max-width:800px;
+    margin:0 auto;
+}
+.cat-title{
+    font-size:20px;
+    font-weight:900;
+    color:#9a3412;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.menu-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+}
+.item-card{
+    background:#fff;
+    border-radius:12px;
+    padding:14px;
+    display:flex;
+    gap:12px;
+    box-shadow:0 2px 10px rgba(249,115,22,0.08);
+    border:1px solid #fed7aa;
+}
+.item-img{
+    width:80px;
+    height:80px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#fed7aa,#fdba74);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+    flex-shrink:0;
+}
+.item-info{flex:1;min-width:0;}
+.item-name{
+    font-size:15px;
+    font-weight:800;
+    color:#1c1917;
+    margin-bottom:3px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.veg-mark{
+    display:inline-block;
+    width:14px;
+    height:14px;
+    border:2px solid #16a34a;
+    border-radius:2px;
+    position:relative;
+    flex-shrink:0;
+}
+.veg-mark::after{
+    content:'';
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:6px;height:6px;
+    background:#16a34a;
+    border-radius:50%;
+}
+.veg-mark.nonveg{border-color:#dc2626;}
+.veg-mark.nonveg::after{background:#dc2626;}
+.item-desc{
+    font-size:12px;
+    color:#78716c;
+    margin-bottom:6px;
+    line-height:1.4;
+}
+.item-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.item-price{
+    font-size:16px;
+    font-weight:900;
+    color:#ea580c;
+}
+.add-btn{
+    padding:7px 16px;
+    background:#f97316;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    letter-spacing:0.5px;
+}
+.add-btn:active{transform:scale(0.96);}
+
+/* CART FLOAT */
+.cart-float{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:#fff;
+    padding:12px 16px;
+    box-shadow:0 -4px 20px rgba(0,0,0,0.1);
+    display:none;
+    z-index:200;
+    border-top:2px solid #fed7aa;
+}
+.cart-float.show{display:block;}
+.cart-btn{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    padding:14px 20px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+    border:none;
+    width:100%;
+    max-width:800px;
+    margin:0 auto;
+    box-shadow:0 4px 15px rgba(22,163,74,0.4);
+}
+.cart-btn:active{transform:scale(0.98);}
+
+/* MODAL */
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    z-index:999;
+    align-items:flex-end;
+    justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+    background:#fff;
+    width:100%;
+    max-width:600px;
+    max-height:92vh;
+    border-radius:20px 20px 0 0;
+    overflow-y:auto;
+    animation:slideUp 0.3s ease;
+}
+@keyframes slideUp{
+    from{transform:translateY(100%);}
+    to{transform:translateY(0);}
+}
+.modal-header{
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #fed7aa;
+    position:sticky;
+    top:0;
+    background:#fff;
+    z-index:10;
+    border-radius:20px 20px 0 0;
+}
+.modal-header h3{
+    font-size:18px;
+    font-weight:900;
+    color:#9a3412;
+}
+.close-btn{
+    background:#fee2e2;
+    color:#dc2626;
+    border:none;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:700;
+}
+.modal-body{padding:16px 20px 24px;}
+
+/* CART ITEMS */
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid #f5f5f4;
+}
+.cart-item-info{flex:1;}
+.cart-item-name{
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:3px;
+}
+.cart-item-price{
+    font-size:12px;
+    color:#78716c;
+}
+.qty-ctrl{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff7ed;
+    border-radius:8px;
+    padding:4px;
+    border:1px solid #fed7aa;
+}
+.qty-btn{
+    width:28px;
+    height:28px;
+    border:none;
+    background:#f97316;
+    color:#fff;
+    border-radius:6px;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+    line-height:1;
+}
+.qty-num{
+    font-size:14px;
+    font-weight:900;
+    min-width:20px;
+    text-align:center;
+}
+
+/* FORM */
+.form-group{margin-bottom:14px;}
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:#9a3412;
+    margin-bottom:6px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:12px 14px;
+    border:2px solid #fed7aa;
+    border-radius:10px;
+    font-size:14px;
+    font-family:inherit;
+    outline:none;
+    background:#fff7ed;
+    font-weight:600;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:#f97316;
+    background:#fff;
+}
+
+/* ORDER TYPE */
+.order-type{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:14px;
+}
+.type-opt{
+    padding:12px;
+    border:2px solid #fed7aa;
+    border-radius:10px;
+    text-align:center;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:700;
+    background:#fff7ed;
+    color:#9a3412;
+}
+.type-opt.active{
+    background:#f97316;
+    color:#fff;
+    border-color:#ea580c;
+}
+
+/* BILL */
+.bill-box{
+    background:#fff7ed;
+    border:2px dashed #fdba74;
+    border-radius:12px;
+    padding:14px;
+    margin:16px 0;
+}
+.bill-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    padding:4px 0;
+    color:#57534e;
+}
+.bill-row.total{
+    font-size:17px;
+    font-weight:900;
+    color:#ea580c;
+    border-top:2px dashed #fdba74;
+    margin-top:8px;
+    padding-top:10px;
+}
+
+/* BUTTON */
+.btn-primary{
+    display:block;
+    width:100%;
+    padding:15px;
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+    letter-spacing:1px;
+    box-shadow:0 5px 20px rgba(22,163,74,0.4);
+    font-family:inherit;
+}
+.btn-primary:active{transform:scale(0.98);}
+.btn-primary:disabled{background:#94a3b8;cursor:not-allowed;box-shadow:none;}
+
+/* ORDER SUCCESS SCREEN */
+.success-screen{
+    text-align:center;
+    padding:20px 0;
+}
+.success-icon{
+    font-size:80px;
+    margin-bottom:14px;
+    animation:bounce 1s ease infinite alternate;
+}
+@keyframes bounce{
+    from{transform:translateY(0);}
+    to{transform:translateY(-8px);}
+}
+.success-title{
+    font-size:24px;
+    font-weight:900;
+    color:#16a34a;
+    margin-bottom:6px;
+}
+.success-sub{
+    font-size:14px;
+    color:#57534e;
+    margin-bottom:20px;
+}
+
+/* TIMING BOX */
+.timing-box{
+    background:linear-gradient(135deg,#fff7ed,#fed7aa);
+    border:2px solid #f97316;
+    border-radius:14px;
+    padding:18px;
+    margin:16px 0;
+    text-align:center;
+}
+.timing-lbl{
+    font-size:12px;
+    color:#9a3412;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+.timing-value{
+    font-size:32px;
+    font-weight:900;
+    color:#ea580c;
+    font-family:'Arial Black',sans-serif;
+}
+.timing-note{
+    font-size:12px;
+    color:#78716c;
+    margin-top:6px;
+}
+
+/* OTP BOX */
+.otp-box{
+    background:#fff;
+    border:2px dashed #16a34a;
+    border-radius:14px;
+    padding:18px;
+    margin:16px 0;
+    text-align:center;
+}
+.otp-lbl{
+    font-size:12px;
+    color:#166534;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+.otp-digits{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin:10px 0;
+}
+.otp-digit{
+    width:44px;
+    height:52px;
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:#fff;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:900;
+    font-family:'Arial Black',sans-serif;
+    box-shadow:0 4px 12px rgba(22,163,74,0.35);
+}
+.otp-note{
+    font-size:12px;
+    color:#57534e;
+    margin-top:8px;
+    line-height:1.5;
+}
+
+/* ORDER DETAILS */
+.order-details{
+    background:#f5f5f4;
+    border-radius:12px;
+    padding:14px;
+    margin-top:16px;
+    text-align:left;
+}
+.order-details h4{
+    font-size:13px;
+    color:#9a3412;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-bottom:10px;
+}
+.order-details .row{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    padding:4px 0;
+    color:#57534e;
+}
+.order-details .row b{color:#1c1917;}
+
+/* EMPTY CART */
+.empty-cart{
+    text-align:center;
+    padding:40px 20px;
+    color:#78716c;
+}
+.empty-cart .icon{font-size:60px;margin-bottom:12px;}
+.empty-cart p{font-size:14px;}
+
+/* LOADING */
+.loading-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(255,255,255,0.95);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:16px;
+}
+.loading-overlay.show{display:flex;}
+.spinner{
+    width:50px;
+    height:50px;
+    border:5px solid #fed7aa;
+    border-top-color:#f97316;
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{
+    font-size:14px;
+    font-weight:700;
+    color:#9a3412;
+}
+
+@media(min-width:600px){
+    .menu-grid{grid-template-columns:1fr 1fr;}
+    .modal{border-radius:20px;margin:auto;max-height:85vh;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="header-top">
+        <div class="logo">DAILY <span>DOSE</span></div>
+        <div style="font-size:12px;font-weight:700;">🟢 OPEN NOW</div>
+    </div>
+    <div class="header-info">
+        <span>📍 Civil Lines, Raipur</span>
+        <span>🕐 11 AM - 11 PM</span>
+        <span>🚴 Free Delivery 5 KM</span>
+    </div>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="cat-tabs" id="catTabs"></div>
+
+<!-- MENU -->
+<div class="menu-section" id="menuSection"></div>
+
+<!-- CART FLOAT -->
+<div class="cart-float" id="cartFloat">
+    <button class="cart-btn" onclick="openCart()">
+        <span id="cartCount">0 items</span>
+        <span>View Cart • <span id="cartTotal">₹0</span> →</span>
+    </button>
+</div>
+
+<!-- CART MODAL -->
+<div class="modal-overlay" id="cartModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>🛒 Your Cart</h3>
+            <button class="close-btn" onclick="closeCart()">✕</button>
+        </div>
+        <div class="modal-body" id="cartBody"></div>
+    </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>📝 Checkout</h3>
+            <button class="close-btn" onclick="closeCheckout()">✕</button>
+        </div>
+        <div class="modal-body">
+
+            <div class="order-type">
+                <div class="type-opt active" id="typeDelivery" onclick="setOrderType('delivery')">🚴 Delivery</div>
+                <div class="type-opt" id="typeTakeaway" onclick="setOrderType('takeaway')">🥡 Takeaway</div>
+            </div>
+
+            <div class="form-group">
+                <label>Your Name / आपका नाम</label>
+                <input type="text" id="custName" placeholder="Enter your name">
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number / मोबाइल नंबर</label>
+                <input type="tel" id="custMobile" placeholder="10-digit mobile" maxlength="10">
+            </div>
+
+            <div class="form-group" id="addressGroup">
+                <label>Delivery Address / पता</label>
+                <textarea id="custAddress" rows="2" placeholder="House no, street, area"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Special Instructions (optional)</label>
+                <input type="text" id="custNote" placeholder="e.g. Less spicy">
+            </div>
+
+            <div class="bill-box" id="billBox"></div>
+
+            <button class="btn-primary" onclick="placeOrder()">
+                ✅ PLACE ORDER / ऑर्डर करें
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal">
+        <div class="modal-body">
+
+            <div class="success-screen">
+                <div class="success-icon">🎉</div>
+                <div class="success-title">Order Placed!</div>
+                <div class="success-sub">आपका ऑर्डर मिल गया है</div>
+            </div>
+
+            <div class="timing-box">
+                <div class="timing-lbl">⏱️ Estimated Time / अनुमानित समय</div>
+                <div class="timing-value" id="timingValue">25 min</div>
+                <div class="timing-note">आपका ऑर्डर तैयार होने में इतना समय लगेगा</div>
+            </div>
+
+            <div class="otp-box">
+                <div class="otp-lbl">🔐 Delivery OTP / डिलीवरी OTP</div>
+                <div class="otp-digits" id="otpDigits"></div>
+                <div class="otp-note">
+                    ⚠️ यह OTP delivery वाले को बताएं<br>
+                    <span style="font-size:11px;color:#78716c;">Share this OTP with delivery person to confirm</span>
+                </div>
+            </div>
+
+            <div class="order-details" id="orderDetails"></div>
+
+            <button class="btn-primary" style="margin-top:16px;background:linear-gradient(135deg,#f97316,#ea580c);box-shadow:0 5px 20px rgba(249,115,22,0.4);" onclick="closeSuccess()">
+                🏠 Back to Home
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Placing your order...</div>
+</div>
+
+<script>
+// ============================================================
+// ⚙️ SETTINGS — यहाँ बदलें
+// ============================================================
+
+const RESTAURANT_NAME = "Daily Dose";
+const WHATSAPP_NUMBER = "919999999999";   // ← Demo नंबर (बाद में बदलें)
+const DELIVERY_FREE_UPTO = 5;             // KM
+const BASE_DELIVERY_TIME = 25;            // Minutes
+const TAX_PERCENT = 5;                    // 5% GST
+
+// ============================================================
+// MENU DATA — Dummy (Restaurant वाला बाद में बदलेगा)
+// ============================================================
+const menu = {
+    "Bakery": [
+        { id: "b1", name: "Chocolate Truffle Cake", desc: "Rich chocolate cake with truffle icing", price: 550, emoji: "🍰", veg: true },
+        { id: "b2", name: "Red Velvet Pastry", desc: "Classic red velvet with cream cheese", price: 120, emoji: "🧁", veg: true },
+        { id: "b3", name: "Butter Croissant", desc: "Flaky French-style croissant", price: 90, emoji: "🥐", veg: true },
+        { id: "b4", name: "Choco Brownie", desc: "Fudgy brownie with walnuts", price: 80, emoji: "🍫", veg: true }
+    ],
+    "Pan-Asian": [
+        { id: "p1", name: "Veg Momos (6 pcs)", desc: "Steamed momos with spicy chutney", price: 100, emoji: "🥟", veg: true },
+        { id: "p2", name: "Chicken Hakka Noodles", desc: "Wok-tossed noodles with chicken", price: 220, emoji: "🍜", veg: false },
+        { id: "p3", name: "Veg Fried Rice", desc: "Classic fried rice with veggies", price: 180, emoji: "🍚", veg: true },
+        { id: "p4", name: "Veg Manchurian", desc: "Crispy balls in tangy sauce", price: 200, emoji: "🥡", veg: true }
+    ],
+    "Continental": [
+        { id: "c1", name: "Pasta Alfredo", desc: "Creamy white sauce pasta", price: 280, emoji: "🍝", veg: true },
+        { id: "c2", name: "Grilled Sandwich", desc: "Triple-layer grilled sandwich", price: 180, emoji: "🥪", veg: true },
+        { id: "c3", name: "French Fries", desc: "Crispy golden fries", price: 120, emoji: "🍟", veg: true },
+        { id: "c4", name: "Margherita Pizza", desc: "Classic cheese pizza", price: 300, emoji: "🍕", veg: true }
+    ],
+    "Indian": [
+        { id: "i1", name: "Paneer Butter Masala", desc: "Creamy paneer curry", price: 280, emoji: "🍛", veg: true },
+        { id: "i2", name: "Dal Makhani", desc: "Slow-cooked black dal", price: 220, emoji: "🍲", veg: true },
+        { id: "i3", name: "Butter Naan", desc: "Soft naan with butter", price: 50, emoji: "🫓", veg: true },
+        { id: "i4", name: "Veg Biryani", desc: "Fragrant rice with veggies", price: 250, emoji: "🍚", veg: true }
+    ],
+    "Beverages": [
+        { id: "v1", name: "Cold Coffee", desc: "Chilled creamy coffee", price: 150, emoji: "🥤", veg: true },
+        { id: "v2", name: "Masala Chai", desc: "Indian spiced tea", price: 60, emoji: "☕", veg: true },
+        { id: "v3", name: "Fresh Lime Soda", desc: "Refreshing lime drink", price: 90, emoji: "🍋", veg: true },
+        { id: "v4", name: "Mango Shake", desc: "Fresh mango milkshake", price: 140, emoji: "🥭", veg: true }
+    ]
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let cart = [];
+let orderType = "delivery";
+let currentCategory = "Bakery";
+
+// ============================================================
+// RENDER CATEGORIES
+// ============================================================
+function renderCategories() {
+    const tabs = document.getElementById("catTabs");
+    tabs.innerHTML = "";
+    Object.keys(menu).forEach(cat => {
+        const btn = document.createElement("div");
+        btn.className = "cat-tab" + (cat === currentCategory ? " active" : "");
+        btn.textContent = cat;
+        btn.onclick = () => {
+            currentCategory = cat;
+            renderCategories();
+            renderMenu();
+        };
+        tabs.appendChild(btn);
+    });
+}
+
+// ============================================================
+// RENDER MENU
+// ============================================================
+function renderMenu() {
+    const sec = document.getElementById("menuSection");
+    sec.innerHTML = "";
+
+    const title = document.createElement("div");
+    title.className = "cat-title";
+    title.textContent = currentCategory;
+    sec.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "menu-grid";
+
+    menu[currentCategory].forEach(item => {
+        const card = document.createElement("div");
+        card.className = "item-card";
+        card.innerHTML = `
+            <div class="item-img">${item.emoji}</div>
+            <div class="item-info">
+                <div class="item-name">
+                    <span class="veg-mark ${item.veg ? '' : 'nonveg'}"></span>
+                    ${item.name}
+                </div>
+                <div class="item-desc">${item.desc}</div>
+                <div class="item-bottom">
+                    <div class="item-price">₹${item.price}</div>
+                    <button class="add-btn" onclick="addToCart('${item.id}','${currentCategory}')">+ ADD</button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+
+    sec.appendChild(grid);
+}
+
+// ============================================================
+// CART FUNCTIONS
+// ============================================================
+function addToCart(itemId, cat) {
+    const item = menu[cat].find(i => i.id === itemId);
+    if (!item) return;
+
+    const existing = cart.find(c => c.id === itemId);
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ ...item, qty: 1, category: cat });
+    }
+    updateCart();
+    showToast(`✅ ${item.name} added`);
+}
+
+function removeFromCart(itemId) {
+    const item = cart.find(c => c.id === itemId);
+    if (item) {
+        item.qty--;
+        if (item.qty <= 0) {
+            cart = cart.filter(c => c.id !== itemId);
+        }
+    }
+    updateCart();
+    if (document.getElementById("cartModal").classList.contains("show")) {
+        renderCart();
+    }
+}
+
+function updateCart() {
+    const totalItems = cart.reduce((s, c) => s + c.qty, 0);
+    const totalPrice = cart.reduce((s, c) => s + (c.price * c.qty), 0);
+
+    const float = document.getElementById("cartFloat");
+    if (totalItems > 0) {
+        float.classList.add("show");
+        document.getElementById("cartCount").textContent =
+            `${totalItems} item${totalItems > 1 ? 's' : ''}`;
+        document.getElementById("cartTotal").textContent = `₹${totalPrice}`;
+    } else {
+        float.classList.remove("show");
+    }
+}
+
+// ============================================================
+// CART MODAL
+// ============================================================
+function openCart() {
+    renderCart();
+    document.getElementById("cartModal").classList.add("show");
+}
+function closeCart() {
+    document.getElementById("cartModal").classList.remove("show");
+}
+
+function renderCart() {
+    const body = document.getElementById("cartBody");
+    if (cart.length === 0) {
+        body.innerHTML = `
+            <div class="empty-cart">
+                <div class="icon">🛒</div>
+                <p>आपका cart खाली है</p>
+                <p style="font-size:12px;margin-top:6px;">Add items from menu</p>
+            </div>`;
+        return;
+    }
+
+    let html = "";
+    cart.forEach(item => {
+        html += `
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <div class="cart-item-name">
+                        <span class="veg-mark ${item.veg ? '' : 'nonveg'}"></span>
+                        ${item.name}
+                    </div>
+                    <div class="cart-item-price">₹${item.price} × ${item.qty} = ₹${item.price * item.qty}</div>
+                </div>
+                <div class="qty-ctrl">
+                    <button class="qty-btn" onclick="removeFromCart('${item.id}')">−</button>
+                    <span class="qty-num">${item.qty}</span>
+                    <button class="qty-btn" onclick="addToCart('${item.id}','${item.category}')">+</button>
+                </div>
+            </div>
+        `;
+    });
+
+    const subtotal = cart.reduce((s, c) => s + (c.price * c.qty), 0);
+
+    html += `
+        <div class="bill-box">
+            <div class="bill-row"><span>Subtotal</span><span>₹${subtotal}</span></div>
+            <div class="bill-row total"><span>Total</span><span>₹${subtotal}</span></div>
+        </div>
+        <button class="btn-primary" onclick="closeCart();openCheckout();">
+            PROCEED TO CHECKOUT →
+        </button>
+    `;
+    body.innerHTML = html;
+}
+
+// ============================================================
+// CHECKOUT
+// ============================================================
+function openCheckout() {
+    renderBill();
+    document.getElementById("checkoutModal").classList.add("show");
+}
+function closeCheckout() {
+    document.getElementById("checkoutModal").classList.remove("show");
+}
+
+function setOrderType(type) {
+    orderType = type;
+    document.getElementById("typeDelivery").classList.toggle("active", type === "delivery");
+    document.getElementById("typeTakeaway").classList.toggle("active", type === "takeaway");
+    document.getElementById("addressGroup").style.display = type === "delivery" ? "block" : "none";
+    renderBill();
+}
+
+function renderBill() {
+    const subtotal = cart.reduce((s, c) => s + (c.price * c.qty), 0);
+    const tax = Math.round(subtotal * TAX_PERCENT / 100);
+    const delivery = orderType === "delivery" ? (subtotal >= 300 ? 0 : 30) : 0;
+    const total = subtotal + tax + delivery;
+
+    document.getElementById("billBox").innerHTML = `
+        <div class="bill-row"><span>Subtotal</span><span>₹${subtotal}</span></div>
+        <div class="bill-row"><span>GST (${TAX_PERCENT}%)</span><span>₹${tax}</span></div>
+        <div class="bill-row"><span>Delivery ${delivery === 0 && orderType === 'delivery' ? '(Free)' : ''}</span><span>₹${delivery}</span></div>
+        <div class="bill-row total"><span>TOTAL</span><span>₹${total}</span></div>
+    `;
+}
+
+// ============================================================
+// PLACE ORDER
+// ============================================================
+function placeOrder() {
+    const name = document.getElementById("custName").value.trim();
+    const mobile = document.getElementById("custMobile").value.trim();
+    const address = document.getElementById("custAddress").value.trim();
+    const note = document.getElementById("custNote").value.trim();
+
+    if (!name) { alert("कृपया अपना नाम भरें!"); return; }
+    if (!/^[6-9][0-9]{9}$/.test(mobile)) {
+        alert("सही मोबाइल नंबर भरें (10 अंक, 6-9 से शुरू)!"); return;
+    }
+    if (orderType === "delivery" && !address) {
+        alert("कृपया delivery address भरें!"); return;
+    }
+
+    document.getElementById("loading").classList.add("show");
+
+    const subtotal = cart.reduce((s, c) => s + (c.price * c.qty), 0);
+    const tax = Math.round(subtotal * TAX_PERCENT / 100);
+    const delivery = orderType === "delivery" ? (subtotal >= 300 ? 0 : 30) : 0;
+    const total = subtotal + tax + delivery;
+
+    // OTP generate (4 digit)
+    const otp = String(Math.floor(1000 + Math.random() * 9000));
+
+    // Order ID
+    const orderId = "DD" + Date.now().toString().slice(-6);
+
+    // Estimated time
+    const itemCount = cart.reduce((s, c) => s + c.qty, 0);
+    const time = BASE_DELIVERY_TIME + (itemCount * 2);
+
+    setTimeout(() => {
+        document.getElementById("loading").classList.remove("show");
+        closeCheckout();
+
+        // Success modal show
+        showSuccess({ name, mobile, address, note, subtotal, tax, delivery, total, otp, orderId, time });
+
+        // WhatsApp message
+        sendWhatsApp({ name, mobile, address, note, subtotal, tax, delivery, total, otp, orderId, time });
+
+    }, 1500);
+}
+
+// ============================================================
+// SUCCESS SCREEN
+// ============================================================
+function showSuccess(order) {
+    // Timing
+    document.getElementById("timingValue").textContent = order.time + " min";
+
+    // OTP digits
+    const otpBox = document.getElementById("otpDigits");
+    otpBox.innerHTML = "";
+    order.otp.split("").forEach(d => {
+        const div = document.createElement("div");
+        div.className = "otp-digit";
+        div.textContent = d;
+        otpBox.appendChild(div);
+    });
+
+    // Order details
+    let itemsHtml = "";
+    cart.forEach(item => {
+        itemsHtml += `<div class="row"><span>${item.name} × ${item.qty}</span><span>₹${item.price * item.qty}</span></div>`;
+    });
+
+    document.getElementById("orderDetails").innerHTML = `
+        <h4>📦 Order Summary</h4>
+        <div class="row"><span>Order ID</span><b>${order.orderId}</b></div>
+        <div class="row"><span>Name</span><b>${order.name}</b></div>
+        <div class="row"><span>Mobile</span><b>${order.mobile}</b></div>
+        <div class="row"><span>Type</span><b>${orderType === 'delivery' ? 'Delivery' : 'Takeaway'}</b></div>
+        ${order.address ? `<div class="row"><span>Address</span><b style="text-align:right;max-width:60%;">${order.address}</b></div>` : ''}
+        <hr style="margin:10px 0;border:none;border-top:1px dashed #d6d3d1;">
+        ${itemsHtml}
+        <hr style="margin:10px 0;border:none;border-top:1px dashed #d6d3d1;">
+        <div class="row"><span>Subtotal</span><span>₹${order.subtotal}</span></div>
+        <div class="row"><span>GST</span><span>₹${order.tax}</span></div>
+        <div class="row"><span>Delivery</span><span>₹${order.delivery}</span></div>
+        <div class="row" style="font-size:16px;font-weight:900;color:#ea580c;padding-top:8px;border-top:2px dashed #fdba74;margin-top:6px;">
+            <span>TOTAL</span><span>₹${order.total}</span>
+        </div>
+    `;
+
+    document.getElementById("successModal").classList.add("show");
+}
+
+function closeSuccess() {
+    document.getElementById("successModal").classList.remove("show");
+    cart = [];
+    updateCart();
+    // Reset form
+    document.getElementById("custName").value = "";
+    document.getElementById("custMobile").value = "";
+    document.getElementById("custAddress").value = "";
+    document.getElementById("custNote").value = "";
+}
+
+// ============================================================
+// WHATSAPP ORDER
+// ============================================================
+function sendWhatsApp(order) {
+    let itemsText = "";
+    cart.forEach(item => {
+        itemsText += `• ${item.name} × ${item.qty} = ₹${item.price * item.qty}%0A`;
+    });
+
+    const msg =
+        `🍽️ *NEW ORDER - ${RESTAURANT_NAME}*%0A%0A` +
+        `📋 Order ID: *${order.orderId}*%0A` +
+        `👤 Name: ${order.name}%0A` +
+        `📱 Mobile: ${order.mobile}%0A` +
+        `📦 Type: ${orderType === 'delivery' ? 'Delivery' : 'Takeaway'}%0A` +
+        (order.address ? `📍 Address: ${order.address}%0A` : '') +
+        (order.note ? `📝 Note: ${order.note}%0A` : '') +
+        `%0A*ITEMS:*%0A${itemsText}%0A` +
+        `Subtotal: ₹${order.subtotal}%0A` +
+        `GST: ₹${order.tax}%0A` +
+        `Delivery: ₹${order.delivery}%0A` +
+        `*TOTAL: ₹${order.total}*%0A%0A` +
+        `🔐 *Delivery OTP: ${order.otp}*%0A` +
+        `⏱️ ETA: ${order.time} min`;
+
+    const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + msg;
+    window.open(url, "_blank");
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg) {
+    const t = document.createElement("div");
+    t.style.cssText = `
+        position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+        background:#16a34a;color:#fff;padding:10px 20px;border-radius:30px;
+        font-size:13px;font-weight:700;z-index:99999;
+        box-shadow:0 5px 20px rgba(22,163,74,0.4);
+        animation:fadeIn 0.3s;
+    `;
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 1500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderCategories();
+renderMenu();
+updateCart();
+
+// Set takeaway address hidden initially
+document.getElementById("addressGroup").style.display = "block";
+</script>
+
+</body>
+</html>
